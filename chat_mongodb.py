@@ -23,8 +23,9 @@ for exchange in example_exchanges:
 	example_messages += exchange
 # print("Starting chat with example messages:")
 # print(example_messages)
-print("Loading model", config["model_path"])
-llm = Llama(model_path=config["model_path"], n_gpu_layers=-1, n_ctx=config["n_ctx"], chat_format=config["chat_format"], verbose=False, offload_kqv=True)
+model_path = config["model_dir"] + config["model_filename"]
+print("Initializing model from", model_path, "(First message may take a long time)")
+llm = Llama(model_path=model_path, n_gpu_layers=-1, n_ctx=config["n_ctx"], chat_format=config["chat_format"], verbose=False, offload_kqv=True)
 agent = MongoDBAgent(llm, messages = example_messages)
 
 print()
