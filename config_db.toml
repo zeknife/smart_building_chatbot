@@ -1,0 +1,4 @@
+# Fill in mongodb information
+clientName = ""
+databaseName = ""
+collectionName = ""

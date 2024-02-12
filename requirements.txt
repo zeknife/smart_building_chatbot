@@ -1,0 +1,4 @@
+chatformat==1.2
+pymongo==4.6.1
+toml==0.10.2
+llama_cpp==0.2.28

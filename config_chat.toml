@@ -1,0 +1,5 @@
+examples_path = "./examples.json"
+model_dir = "./"
+model_filename = "mistral-7b-openorca.Q5_K_M.gguf"
+chat_format = "chatml"
+n_ctx = 4000
