@@ -7,6 +7,7 @@ from collections import defaultdict
 import re
 import numpy as np
 from pandas import DataFrame
+import yaml
 
 numpy_operators = "min max median std".split()
 numpy_functions = {name: getattr(np, name) for name in numpy_operators}
@@ -114,7 +115,7 @@ def format_list(readings, keys):
 	# print("Readings arr shape:", readings_arr.shape)
 	# print("Type:", type(readings_arr), "dtype:", readings_arr.dtype)
 	# Run each numpy operator on all the data at once for speed (axis 0 ensures that it works for both 1D and 2D arrays)
-	statistics = {op: numpy_functions[op](readings_arr, axis=0).round(1) for op in operators}
+	statistics = {op: numpy_functions[op](readings_arr, axis=0).round(2) for op in operators}
 	statistics_dict = {key: {op: statistics[op][i] for op in operators} for i, key in enumerate(keys)}
 
 	# print("stats dict:", statistics_dict)
@@ -190,7 +191,7 @@ def queryFromJSON(json_string):
 	else:
 		myClient = pm.MongoClient(clientName)
 		myDatabase = myClient[databaseName]
-		
+
 	collection = myDatabase[collectionName]
 
 	json_dict = loads(json_string)

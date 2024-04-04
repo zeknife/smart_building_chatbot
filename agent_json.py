@@ -83,6 +83,16 @@ Finally, answer the original question in a new message like this:
 Answer: Concise but comprehensive answer to the user's question. If the retrieved data is not adequate to answer the question, or there are any other anomalies, inform the user in a cooperative manner. Keep in mind that the user cannot see the JSON query or the retrieved data, only your written answer.
 """
 
+# Function to get rid of text after json query
+def remove_text_after_last_bracket(input_string):
+	index = input_string.rfind('}')
+	
+	if index != -1:
+		result_string = input_string[:index + 1]
+		return result_string
+	else:
+		return input_string
+
 
 class JsonAgent:
 	def __init__(self, llm, chat_format = 'chatml', system_prompt = sysprompt, messages = [], query_stop = ["\nAnswer:", "\n<|"], stateful=True, echo=True): # [, "\n\{"]
@@ -120,7 +130,8 @@ class JsonAgent:
 		# print("content length:", len(content))
 
 		if 'Query: ' in content:
-			query = content.split('Query: ')[1].rstrip('.\n\\')
+			content = remove_text_after_last_bracket(content)
+			query = content.split('Query: ')[1]#.rstrip('.\n\\')
 			# print("GENERATED QUERY:", query)
 			# try:
 				# df = self.dataframe
@@ -147,7 +158,7 @@ class JsonAgent:
 			# append = "Result:\n" + result + '\nAnswer:'
 			# print("FULL TEMP MESSAGE LOG:")
 			# for message in messages_temp: print(message)
-			answer_choice = self.llm.create_chat_completion(messages_temp, temperature=0, max_tokens=512, grammar = answer_grammar)['choices'][0]
+			answer_choice = self.llm.create_chat_completion(messages_temp,  top_k=1, max_tokens=512, grammar = answer_grammar)['choices'][0]
 			answer_message = answer_choice['message']
 			answer_content = answer_message['content']
 			messages_temp.append(answer_message)
