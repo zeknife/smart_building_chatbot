@@ -184,10 +184,13 @@ def format_list(readings, keys):
 
 def queryFromJSON(json_string):
 	if local_db: # If local, override clientname and databasename from config_db
-		clientName, databaseName = getConnectionInfo(),
-
-	myClient = pm.MongoClient(clientName)
-	myDatabase = myClient[databaseName]
+		clientNameLocal, databaseNameLocal = getConnectionInfo()
+		myClient = pm.MongoClient(clientNameLocal)
+		myDatabase = myClient[databaseNameLocal]
+	else:
+		myClient = pm.MongoClient(clientName)
+		myDatabase = myClient[databaseName]
+		
 	collection = myDatabase[collectionName]
 
 	json_dict = loads(json_string)
