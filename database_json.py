@@ -12,7 +12,7 @@ numpy_operators = "min max median std".split()
 numpy_functions = {name: getattr(np, name) for name in numpy_operators}
 
 config = toml.load("config_db.toml")
-sensor_config = toml.load("config_sensor.toml")
+#sensor_config = toml.load("config_sensor.toml")
 
 clientName = config["clientName"]
 databaseName = config["databaseName"]
@@ -23,8 +23,8 @@ relative_base = datetime.datetime(2023, 12, 14, 10, 37, 00)
 
 local_db = config["localDB"]
 
-nominal_ranges = {key: sensor_config[key]['nominal'] for key in sensor_config}
-acceptable_ranges = {key: sensor_config[key]['acceptable'] for key in sensor_config}
+# nominal_ranges = {key: sensor_config[key]['nominal'] for key in sensor_config}
+# acceptable_ranges = {key: sensor_config[key]['acceptable'] for key in sensor_config}
 
 # def get_stats(keys, readings):
 # 	for 
@@ -56,19 +56,19 @@ def in_range(reading, interval):
 	low, high = interval
 	return low <= reading < high
 
-def judgment(readings):
-	keys = readings[0]['data'].keys()
-	anomalies = {} # dict of keys 
-	acceptable = defaultdict(int)
-	not_acceptable = defaultdict(int)
-	for reading in readings:
-		for key, val in reading['data'].items():
-			if not in_range(val, sensor_config[key]['nominal']):
-				if in_range(val, sensor_config[key]['acceptable']):
-					acceptable[key] += 1
-				else:
-					not_acceptable[key] += 1
-	return acceptable, not_acceptable
+# def judgment(readings):
+# 	keys = readings[0]['data'].keys()
+# 	anomalies = {} # dict of keys 
+# 	acceptable = defaultdict(int)
+# 	not_acceptable = defaultdict(int)
+# 	for reading in readings:
+# 		for key, val in reading['data'].items():
+# 			if not in_range(val, sensor_config[key]['nominal']):
+# 				if in_range(val, sensor_config[key]['acceptable']):
+# 					acceptable[key] += 1
+# 				else:
+# 					not_acceptable[key] += 1
+# 	return acceptable, not_acceptable
 
 # def judgment_string()
 
